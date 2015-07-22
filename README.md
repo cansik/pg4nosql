@@ -16,7 +16,8 @@ events_table = db_client.get_table(EVENTS_TABLE_NAME)
 # create table if it not exists
 if events_table is None:
     # add relational columns data and event
-    events_table = db_client.create_table(EVENTS_TABLE_NAME, relational_columns={'date': 'date', 'event': 'integer'})
+    events_table = db_client.create_table(EVENTS_TABLE_NAME,
+                    relational_columns={'date': 'date', 'event': 'integer'})
 
 # store event documents into the db
 for e in flat_events:
