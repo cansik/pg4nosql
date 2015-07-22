@@ -58,4 +58,4 @@ query | returns a list of documents by a given query
 drop | not implemented yet!
 
 ### About
-The wrapper has been written for a science project in is an early alpha version!
+The wrapper has been written for a science project and is still an early alpha version!
