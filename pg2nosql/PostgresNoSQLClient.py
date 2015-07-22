@@ -1,9 +1,11 @@
 import psycopg2
+from psycopg2.extensions import AsIs
+from psycopg2.extras import RealDictCursor
 from PostgresNoSQLTable import PostgresNoSQLTable
 
 
 class PostgresNoSQLClient(object):
-    SQL_CREATE_JSON_TABLE = 'CREATE TABLE %s (id SERIAL, data JSON);'
+    SQL_CREATE_JSON_TABLE = 'CREATE TABLE %s (id SERIAL %s, data JSON);'
     SQL_DROP_JSON_TABLE = 'DROP TABLE IF EXISTS %s;'
     SQL_TABLE_EXISTS = "SELECT EXISTS(SELECT relname FROM pg_class WHERE relname=%s)"
 
@@ -18,13 +20,15 @@ class PostgresNoSQLClient(object):
     def close(self):
         return self.connection.close()
 
-    def create_table(self, table_name):
-        self.cursor.execute(self.SQL_CREATE_JSON_TABLE, (table_name,))
+    def create_table(self, table_name, columns={}):
+        # create additional columns string
+        columns_str = ''.join(', %s %s' % (key, val) for (key, val) in columns.iteritems())
+        self.cursor.execute(self.SQL_CREATE_JSON_TABLE, (AsIs(table_name), AsIs(columns_str)))
         self.commit()
         return PostgresNoSQLTable(table_name, self.connection)
 
     def drop_table(self, table_name):
-        self.cursor.execute(self.SQL_DROP_JSON_TABLE, (table_name,))
+        self.cursor.execute(self.SQL_DROP_JSON_TABLE, (AsIs(table_name),))
         self.commit()
 
     def get_table(self, table_name):
