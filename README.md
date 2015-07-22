@@ -1,4 +1,4 @@
-# pg2NoSql
+# pg4NoSql
 A simple psycopg2 based wrapper for nosql like database interaction with python.
 
 ### Background
