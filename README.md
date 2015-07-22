@@ -2,7 +2,9 @@
 A simple psycopg2 based wrapper for nosql like database interaction with python.
 
 ### Background
-The wrapper was developed to work with JSON postgre storage like a real NoSQL DB (e.g. MongoDB) . After a long research with Google There Was No library found Which helps to work with JSON and PostgreSQL.
+The wrapper was developed to work with JSON postgres storage like a real NoSQL DB (e.g. MongoDB) . After a long research with google there was no library found which helps to work with JSON and PostgreSQL.
+
+The strength of the wrapper is that you still can have multiple relational colums in your table.
 
 ### Example
 This example shows the funcionality of the wrapper. It simply stores events into an event table and then reads all the events which are of type **XRA**
@@ -13,17 +15,19 @@ events_table = db_client.get_table(EVENTS_TABLE_NAME)
 
 # create table if it not exists
 if events_table is None:
-    events_table = db_client.create_table(EVENTS_TABLE_NAME)
+    # add relational columns data and event
+    events_table = db_client.create_table(EVENTS_TABLE_NAME, columns={'date': 'date', 'event': 'integer'})
 
 # store event documents into the db
 for e in flat_events:
-    events_table.put(e)
+    # add relational data as well
+    events_table.put(e, relational_data={'date': '01 01 2015', 'event': 1337})
+events_table.commit()
 
 # read all documents of type 'XRA'
 all_xra = events_table.query(query="data->>'type' = 'XRA'")
 
-# commit all changes and close db connection
-events_table.commit()
+# close db connection
 db_client.close()
 ```
 
@@ -48,6 +52,7 @@ Method | Description
 commit | commit transactions
 put | inserts document into the table
 get | returns document by id
+get_columns | returns all columns of this table
 query | returns a list of documents by a given query
 drop | not implemented yet!
 
