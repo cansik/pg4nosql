@@ -20,9 +20,9 @@ class PostgresNoSQLClient(object):
     def close(self):
         return self.connection.close()
 
-    def create_table(self, table_name, columns={}):
+    def create_table(self, table_name, relational_columns={}):
         # create additional columns string
-        columns_str = ''.join(', %s %s' % (key, val) for (key, val) in columns.iteritems())
+        columns_str = ''.join(', %s %s' % (key, val) for (key, val) in relational_columns.iteritems())
         self.cursor.execute(self.SQL_CREATE_JSON_TABLE, (AsIs(table_name), AsIs(columns_str)))
         self.commit()
         return PostgresNoSQLTable(table_name, self.connection)
