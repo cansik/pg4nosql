@@ -1,0 +1,1 @@
+DEFAULT_POSTGRES_DATABASE = 'postgres'
