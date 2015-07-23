@@ -44,7 +44,6 @@ class PostgresNoSQLTable(object):
         object_id = record.pop(DEFAULT_ROW_IDENTIFIER)
 
         relational_data_sql = ''.join(", %s='%s'" % (key, val) for (key, val) in record.iteritems())
-        print relational_data_sql
 
         self.cursor.execute(self.__SQL_UPDATE_JSON, (AsIs(self.name),
                             json.dumps(data), AsIs(relational_data_sql), object_id))
