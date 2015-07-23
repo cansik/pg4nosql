@@ -55,7 +55,7 @@ put | inserts document into the table
 get | returns document by id
 get_columns | returns all columns of this table
 query | returns a list of documents by a given query
-drop | not implemented yet!
+delete | deletes a document by its name
 
 ### About
 The wrapper has been written for a science project and is still an early alpha version!

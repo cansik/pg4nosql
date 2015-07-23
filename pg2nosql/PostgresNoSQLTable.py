@@ -10,6 +10,7 @@ class PostgresNoSQLTable(object):
     SQL_QUERY_JSON = 'SELECT %s FROM %s WHERE %s'
     SQL_GET_JSON = 'SELECT * FROM %s WHERE id=%s'
     SQL_GET_COLUMNS = 'select column_name from information_schema.columns where table_name = %s'
+    SQL_DELETE_JSON = 'DELETE FROM %s WHERE id=%s'
 
     def __init__(self, name, connection):
         self.name = name
@@ -49,5 +50,5 @@ class PostgresNoSQLTable(object):
         columns = map(lambda m: m['column_name'], self.cursor.fetchall())
         return columns
 
-    def drop(self):
-        raise Exception('not implemented yet!')
+    def delete(self, object_id):
+        self.cursor.execute(self.SQL_DELETE_JSON, (AsIs(self.name), object_id))
