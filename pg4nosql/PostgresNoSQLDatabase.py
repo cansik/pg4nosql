@@ -37,6 +37,12 @@ class PostgresNoSQLDatabase(object):
         else:
             return None
 
+    def get_or_create_(self, table_name):
+        table = self.get_table(table_name)
+        if not table:
+            table = self.create_table(table_name)
+        return table
+
     def table_exists(self, table_name):
         exists = False
         try:
