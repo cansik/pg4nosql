@@ -31,6 +31,7 @@ class PostgresNoSQLClient(object):
         if not self.__connection:
             self.__connection = psycopg2.connect(host=self.host, database=self.database,
                                                  user=self.__user, password=self.__password)
+            self.__connection.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
             self.__cursor = self.__connection.cursor()
 
     def __close(self):
@@ -66,7 +67,7 @@ class PostgresNoSQLClient(object):
     def create_database(self, database_name):
         self.__connect()
         self.__cursor.execute(self.__SQL_CREATE_DATABASE, (AsIs(database_name),))
-        self.commit()
+        self.__commit()
         self.__close()
         return self.__create_db_object(database_name)
 
