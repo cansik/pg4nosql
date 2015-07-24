@@ -31,7 +31,7 @@ class PostgresNoSQLTable(object):
 
         if relational_data:
             relational_data_columns = ',' + ",".join(relational_data.keys())
-            relational_data_values = ",'" + "','".join(relational_data.values()) + "'"
+            relational_data_values = ",'" + "','".join(map(str, relational_data.values())) + "'"
 
         self.cursor.execute(self.__SQL_INSERT_JSON, (AsIs(self.name),
                             AsIs(relational_data_columns), json.dumps(data), AsIs(relational_data_values)))

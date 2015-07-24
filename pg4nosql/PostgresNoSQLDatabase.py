@@ -5,7 +5,7 @@ from pg4nosql.PostgresNoSQLTable import PostgresNoSQLTable
 
 
 class PostgresNoSQLDatabase(object):
-    __SQL_CREATE_JSON_TABLE = 'CREATE TABLE %s (id SERIAL %s, data JSON);'
+    __SQL_CREATE_JSON_TABLE = 'CREATE TABLE %s (id SERIAL PRIMARY KEY %s, data JSON);'
     __SQL_DROP_JSON_TABLE = 'DROP TABLE IF EXISTS %s;'
     __SQL_TABLE_EXISTS = "SELECT EXISTS(SELECT relname FROM pg_class WHERE relname=%s)"
 
