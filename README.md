@@ -7,7 +7,7 @@ The wrapper was developed to work with JSON postgres storage like a real NoSQL D
 The strength of the wrapper is that you still can have multiple relational colums in your table.
 
 ### Installation
-1. download or clone this repository (current release: `0.1.1`)
+1. [download](https://github.com/cansik/pg4nosql/archive/release_0.1.1.zip) or clone this repository (current release: `0.1.1`)
 2. run the command `python setup.py install`
 
 ### Example
