@@ -1,4 +1,3 @@
 *.pyc
 .idea
-TestScript.py
 build
