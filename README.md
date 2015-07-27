@@ -84,8 +84,8 @@ And here the result of the user query:
 
 ```json
 [  
-   "{'data': {u'age': 24, u'name': u'Florian'}, 'id': 1}",
-   "{'data': {u'age': 24, u'name': u'Markus'}, 'id': 2}"
+   "{'json': {u'age': 24, u'name': u'Florian'}, 'id': 1}",
+   "{'json': {u'age': 24, u'name': u'Markus'}, 'id': 2}"
 ]
 ```
 You can also combine relational and JSON queries together like this:
@@ -99,7 +99,7 @@ Here the result of this query:
 
 ```json
 [  
-   "{'data': {u'name': u'Berlin'}, 'id': 2, 'size': 891.8}"
+   "{'json': {u'name': u'Berlin'}, 'id': 2, 'size': 891.8}"
 ]
 ```
 
