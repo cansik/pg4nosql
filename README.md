@@ -15,7 +15,7 @@ Just run the command:
 During alpha stage the api will change with each build. So try to stay with one version if you want to use it.
 
 ##### The hacky way (newer release)
-1. [download](https://github.com/cansik/pg4nosql/archive/0.1.1.zip) or clone this repository (current release: `0.1.1`)
+1. [download](https://github.com/cansik/pg4nosql/tarball/0.2.2) or clone this repository (current release: `0.2.2`)
 2. run the command `python setup.py install`
 
 ### Changelog
