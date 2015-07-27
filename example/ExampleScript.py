@@ -12,7 +12,10 @@ def main():
     users = demo_db['users']
 
     # create document & relational table
-    cities = demo_db.get_or_create_table('cities', size='real NOT NULL')
+    cities = demo_db.get_or_create_table('cities', size='real')
+
+    # None String Test
+    cities.put({'name': 'Test'}, size=None)
 
     # store data into users table
     users.put({'name': 'Florian', 'age': 24})
@@ -61,6 +64,7 @@ def main():
 
     # close db
     demo_db.close()
+
 
 if __name__ == '__main__':
     main()
