@@ -1,18 +1,23 @@
 import psycopg2
 from psycopg2.extensions import AsIs
-from pg4nosql import DEFAULT_POSTGRES_DATABASE
+from pg4nosql import DEFAULT_POSTGRES_DATABASE, DEFAULT_POSTGRES_PORT
 from pg4nosql.PostgresNoSQLDatabase import PostgresNoSQLDatabase
 
 
 class PostgresNoSQLClient(object):
+    """
+    Creates new connections and
+    """
+
     __SQL_DATABASE_EXISTS = 'SELECT EXISTS(SELECT datname FROM pg_database WHERE datname=%s)'
     __SQL_CREATE_DATABASE = 'CREATE DATABASE %s'
     __SQL_DROP_DATABASE = 'DROP DATABASE IF EXISTS %s'
 
-    def __init__(self, host, database=DEFAULT_POSTGRES_DATABASE, user=None, password=None):
+    def __init__(self, host, database=DEFAULT_POSTGRES_DATABASE, port=DEFAULT_POSTGRES_PORT, user=None, password=None):
         # public fields
         self.host = host
         self.database = database
+        self.port = port
 
         # private
         self.__user = user
@@ -29,7 +34,7 @@ class PostgresNoSQLClient(object):
     def __connect(self):
         self.__connect_counter += 1
         if not self.__connection:
-            self.__connection = psycopg2.connect(host=self.host, database=self.database,
+            self.__connection = psycopg2.connect(host=self.host, database=self.database, port=self.port,
                                                  user=self.__user, password=self.__password)
             self.__connection.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
             self.__cursor = self.__connection.cursor()
@@ -44,7 +49,8 @@ class PostgresNoSQLClient(object):
         return self.__connect_counter is 0
 
     def __create_db_object(self, database_name):
-        return PostgresNoSQLDatabase(name=database_name, host=self.host, user=self.__user, password=self.__password)
+        return PostgresNoSQLDatabase(name=database_name, host=self.host, port=self.port, user=self.__user,
+                                     password=self.__password)
 
     def get_database(self, database_name):
         self.__connect()

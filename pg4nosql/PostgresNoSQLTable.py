@@ -1,5 +1,4 @@
 import json
-import psycopg2
 from psycopg2.extensions import AsIs
 from psycopg2.extras import RealDictCursor
 from pg4nosql import DEFAULT_JSON_COLUMN_NAME, DEFAULT_ROW_IDENTIFIER
@@ -7,6 +6,9 @@ from pg4nosql.PostgresNoSQLResultItem import PostgresNoSQLResultItem
 
 
 class PostgresNoSQLTable(object):
+    """
+    Represents the a postgres table.
+    """
 
     __SQL_INSERT_JSON = "INSERT INTO %s("+DEFAULT_JSON_COLUMN_NAME+" %s) VALUES(%s %s) RETURNING "+DEFAULT_ROW_IDENTIFIER
     __SQL_QUERY_JSON = 'SELECT %s FROM %s WHERE %s'
@@ -24,7 +26,7 @@ class PostgresNoSQLTable(object):
     def commit(self):
         self.connection.commit()
 
-    def put(self, data, relational_data={}):
+    def put(self, data, **relational_data):
         # todo: replace string concatenation with a beautiful solution
         relational_data_columns = ''
         relational_data_values = ''
@@ -71,3 +73,7 @@ class PostgresNoSQLTable(object):
 
     def delete(self, object_id):
         self.cursor.execute(self.__SQL_DELETE_JSON, (AsIs(self.name), object_id))
+
+    def execute(self, sql_query):
+        self.cursor.execute(sql_query)
+        return self.cursor.fetchall()
