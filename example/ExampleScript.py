@@ -14,13 +14,13 @@ def main():
     # create document & relational table
     cities = demo_db.get_or_create_table('cities', size='real NOT NULL')
 
-    # store data into users
+    # store data into users table
     users.put({'name': 'Florian', 'age': 24})
     users.put({'name': 'Markus', 'age': 24})
     users.put({'name': 'Sara', 'age': 22})
     users.put({'name': 'Thomas', 'age': 25})
 
-    # store data into cities
+    # store data into cities table
     cities.put({'name': 'Zurich'}, size=87.88)
     cities.put({'name': 'Berlin'}, size=891.8)
     cities.put({'name': 'Bern'}, size=51.6)
@@ -38,6 +38,12 @@ def main():
 
     print map(lambda u: str(u), users_24)
     print map(lambda u: str(u), big_ber_cities)
+
+    # get first city of the result array
+    first_city = big_ber_cities[0]
+
+    # read JSON attribute
+    city_name = first_city.json['name']
 
     # change florian's age
     florian = users_24[0]

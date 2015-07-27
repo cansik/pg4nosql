@@ -18,14 +18,22 @@ During alpha stage the api will change with each build. So try to stay with one 
 1. [download](https://github.com/cansik/pg4nosql/archive/0.1.1.zip) or clone this repository (current release: `0.1.1`)
 2. run the command `python setup.py install`
 
+### Changelog
+* Version 0.2.0
+  * added port argument
+  * replaced dictionary argument with **keyword syntax
+  * switched result.relational with result.json
+  * add bracket syntax to get database or table
+  * renamed table.get\_or\_create to match codestyle
+
 ### Example
-These examples show the funcionality of the wrapper. There are some functions which are not covered by the example (like removing of a table) but the importent is explained.
+These examples show the funcionality of the wrapper. There are some functions which are not covered by the examples (like removing of a table) but the importent ones are explained.
 
 ##### Dataschema Creation
-To create the datashema you can use database tools if you want. A document table has two fields:
+To create the dataschema you can use normal database tools if you want. A document table has two fields:
 
 * `id` with data type **serial**
-* `data` with data type **JSON** which represents the document
+* `json` with data type **JSON** which represents the document
 
 But pg4nosql also provides methods to create your database schema on the fly. This is useful to create tables and databases software controlled.
 
@@ -36,17 +44,17 @@ This example shows how to create a database and their tables. The cities table i
 pg4nosql = PostgresNoSQLClient(host='localhost')
 
 # create demo database
-demo_db = pg4nosql.get_or_create_database('demo')
+demo_db = pg4nosql['demo']
 
 # create document only table
-users = demo_db.get_or_create('users')
+users = demo_db['users']
 
-# create document and relational table
-cities = demo_db.get_or_create('cities', {'size': 'real'})
+# create document & relational table
+cities = demo_db.get_or_create_table('cities', size='real NOT NULL')
 ```
 
 ##### Insert Data
-To insert data into the table you just hand over a dictionary or an object which is json serializable. If there are relational columns defined you can set those by the parameter `relational_data`:
+To insert data into the table you just hand over a dictionary or an object which is json serializable. If there are relational columns defined you can set those by the table name as keyword and the value:
 
 ```python
 # store data into users table
@@ -56,21 +64,21 @@ users.put({'name': 'Sara', 'age': 22})
 users.put({'name': 'Thomas', 'age': 25})
 
 # store data into cities table
-cities.put({'name': 'Zurich'}, relational_data={'size': '87.88'})
-cities.put({'name': 'Berlin'}, relational_data={'size': '891.8'})
-cities.put({'name': 'Bern'}, relational_data={'size': '51.6'})
-cities.put({'name': 'London'}, relational_data={'size': '1572'})
+cities.put({'name': 'Zurich'}, size=87.88)
+cities.put({'name': 'Berlin'}, size=891.8)
+cities.put({'name': 'Bern'}, size=51.6)
+cities.put({'name': 'London'}, size=1572)
 
 # commit data
 demo_db.commit()
 ```
 
 ##### Query Data
-To get your data back you can run a query over it. This works like normal SQL WHERE queries. For **JSON** data you have to use the `data` column:
+To get your data back you can run a query over it. This works like normal SQL WHERE queries. For **JSON** data you have to use the `json` column:
 
 ```python
 # query all users which are 24 years old
-users_24 = users.query("data->>'age'='24'")
+users_24 = users.query("json->>'age'='24'")
 ```
 And here the result of the user query:
 
@@ -84,7 +92,7 @@ You can also combine relational and JSON queries together like this:
 
 ```python
 # query all cities which start with be and are bigger than 100 km
-big_ber_cities = cities.query("data->>'name' LIKE 'Ber%'"
+big_ber_cities = cities.query("json->>'name' LIKE 'Ber%'"
                               "AND size > 100")
 ```
 Here the result of this query:
@@ -96,20 +104,20 @@ Here the result of this query:
 ```
 
 ##### Query Data Access
-To **access** the **JSON** fields of the result you have to use **square brackets** (`[]`) on the result.
+To **access** the **JSON** fields of the result there is an attribute called `json`:
 
 ```python
 # get first city of the result array
 first_city = big_ber_cities[0]
 
 # read JSON attribute
-city_name = first_city['name']
+city_name = first_city.json['name']
 ```
-To **access** the **relational** fields of the result there is a attribute called `relational`:
+To **access** the **relational** fields of the result you have to use **square brackets** (`[]`) on the result:
 
 ```python
 # read relational attribute
-city_size = first_city.relational['size']
+city_size = first_city['size']
 ```
 
 ##### Update Data
@@ -118,7 +126,7 @@ With those access methods you can also write into the result and change the valu
 ```python
 # change florian's age
 florian = users_24[0]
-florian['age'] = 25
+florian.json['age'] = 25
 
 users.save(florian)
 users.commit()
@@ -128,7 +136,7 @@ The same works also for the `relational` fields:
 ```python
 # make zurich a bit bigger
 zurich = cities.query_one("data->>'name'='Zurich'")
-zurich.relational['size'] = 90
+zurich['size'] = 90
 
 cities.save(zurich)
 cities.commit()
