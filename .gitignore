@@ -3,3 +3,5 @@
 build
 dist
 MANIFEST
+deploy_to_pip.sh
+update_version.sh

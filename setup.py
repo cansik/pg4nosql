@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='pg4nosql',
-    version='0.2.0',
+    version='0.2.1',
     packages=['pg4nosql'],
     url='https://github.com/cansik/pg4nosql',
     license='MIT License',

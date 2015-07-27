@@ -19,7 +19,7 @@ During alpha stage the api will change with each build. So try to stay with one 
 2. run the command `python setup.py install`
 
 ### Changelog
-* Version 0.2.0
+* Version `0.2.0`
   * added port argument
   * replaced dictionary argument with **keyword syntax
   * switched result.relational with result.json

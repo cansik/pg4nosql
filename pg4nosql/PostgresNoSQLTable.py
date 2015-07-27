@@ -26,7 +26,7 @@ class PostgresNoSQLTable(object):
     def commit(self):
         self.connection.commit()
 
-    def put(self, data, **relational_data):
+    def put(self, json_data, **relational_data):
         # todo: replace string concatenation with a beautiful solution
         relational_data_columns = ''
         relational_data_values = ''
@@ -36,7 +36,7 @@ class PostgresNoSQLTable(object):
             relational_data_values = ",'" + "','".join(map(str, relational_data.values())) + "'"
 
         self.cursor.execute(self.__SQL_INSERT_JSON, (AsIs(self.name),
-                            AsIs(relational_data_columns), json.dumps(data), AsIs(relational_data_values)))
+                            AsIs(relational_data_columns), json.dumps(json_data), AsIs(relational_data_values)))
         return self.cursor.fetchone()[DEFAULT_ROW_IDENTIFIER]
 
     def save(self, record):
