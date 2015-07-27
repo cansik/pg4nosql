@@ -23,13 +23,6 @@ class PostgresNoSQLTable(object):
         self.connection.cursor_factory = RealDictCursor
         self.cursor = self.connection.cursor()
 
-    @staticmethod
-    def __to_sql_string(obj):
-        if obj is not None:
-            return str(obj)
-        else:
-            return None
-
     def commit(self):
         self.connection.commit()
 
@@ -43,7 +36,7 @@ class PostgresNoSQLTable(object):
 
         if relational_data:
             relational_data_columns = ',' + ",".join(relational_data.keys())
-            relational_data_values = ",'" + "','".join(map(self.__to_sql_string, relational_data.values())) + "'"
+            relational_data_values = ",'" + "','".join(map(str, relational_data.values())) + "'"
 
         self.cursor.execute(self.__SQL_INSERT_JSON, (AsIs(self.name),
                                                      AsIs(relational_data_columns), json.dumps(json_data),
