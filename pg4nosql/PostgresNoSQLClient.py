@@ -92,3 +92,6 @@ class PostgresNoSQLClient(object):
             print e
         self.__close()
         return exists
+
+    def __getitem__(self, item):
+        return self.get_or_create_database(item)

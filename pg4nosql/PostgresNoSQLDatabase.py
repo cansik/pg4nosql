@@ -51,3 +51,6 @@ class PostgresNoSQLDatabase(object):
         except psycopg2.Error as e:
             print e
         return exists
+
+    def __getitem__(self, item):
+        return self.get_or_create_table(item)

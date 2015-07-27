@@ -6,12 +6,12 @@ def main():
     pg4nosql = PostgresNoSQLClient(host='localhost')
 
     # create demo database
-    demo_db = pg4nosql.get_or_create_database('demo')
+    demo_db = pg4nosql['demo']
 
     # create document only table
-    users = demo_db.get_or_create_table('users')
+    users = demo_db['users']
 
-    # create document and relational table
+    # create document & relational table
     cities = demo_db.get_or_create_table('cities', size='real NOT NULL')
 
     # store data into users
