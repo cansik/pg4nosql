@@ -23,6 +23,18 @@ class PostgresNoSQLTable(object):
         self.connection.cursor_factory = RealDictCursor
         self.cursor = self.connection.cursor()
 
+    @staticmethod
+    def __to_sql_string(obj):
+        if obj is None:
+            return AsIs(obj)
+        return str(obj)
+
+    @staticmethod
+    def __to_nullable_string(obj):
+        if obj is None:
+            return 'Null'
+        return "'" + str(obj) + "'"
+
     def commit(self):
         self.connection.commit()
 
@@ -49,7 +61,8 @@ class PostgresNoSQLTable(object):
         data = record.pop(DEFAULT_JSON_COLUMN_NAME)
         object_id = record.pop(DEFAULT_ROW_IDENTIFIER)
 
-        relational_data_sql = ''.join(", %s='%s'" % (key, val) for (key, val) in record.iteritems())
+        relational_data_sql = ''.join(
+            ", %s=%s" % (key, self.__to_nullable_string(val)) for (key, val) in record.iteritems())
 
         self.cursor.execute(self.__SQL_UPDATE_JSON, (AsIs(self.name),
                                                      json.dumps(data), AsIs(relational_data_sql), object_id))
