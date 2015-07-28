@@ -56,7 +56,12 @@ class PostgresNoSQLTable(object):
 
     def get(self, object_id):
         self.cursor.execute(self.__SQL_GET_JSON, (AsIs(self.name), object_id))
-        return PostgresNoSQLResultItem(self.cursor.fetchone())
+        record = self.cursor.fetchone()
+
+        if record is None:
+            return record
+
+        return PostgresNoSQLResultItem(record)
 
     def query(self, query='True', columns='*'):
         self.cursor.execute(self.__SQL_QUERY_JSON, (AsIs(columns), AsIs(self.name), AsIs(query)))
