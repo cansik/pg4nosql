@@ -1,6 +1,6 @@
 import psycopg2
 from psycopg2.extensions import AsIs
-from pg4nosql import DEFAULT_POSTGRES_DATABASE, DEFAULT_POSTGRES_PORT
+from pg4nosql import DEFAULT_POSTGRES_DATABASE, DEFAULT_POSTGRES_PORT, DEFAULT_POSTGRES_HOST
 from pg4nosql.PostgresNoSQLDatabase import PostgresNoSQLDatabase
 
 
@@ -13,7 +13,8 @@ class PostgresNoSQLClient(object):
     __SQL_CREATE_DATABASE = 'CREATE DATABASE %s'
     __SQL_DROP_DATABASE = 'DROP DATABASE IF EXISTS %s'
 
-    def __init__(self, host, database=DEFAULT_POSTGRES_DATABASE, port=DEFAULT_POSTGRES_PORT, user=None, password=None):
+    def __init__(self, host=DEFAULT_POSTGRES_HOST, database=DEFAULT_POSTGRES_DATABASE, port=DEFAULT_POSTGRES_PORT,
+                 user=None, password=None):
         # public fields
         self.host = host
         self.database = database
