@@ -15,10 +15,12 @@ Just run the command:
 During alpha stage the api will change with each build. So try to stay with one version if you want to use it.
 
 ##### The hacky way (newer release)
-1. [download](https://github.com/cansik/pg4nosql/tarball/0.2.2) or clone this repository (current release: `0.2.2`)
+1. [download](https://github.com/cansik/pg4nosql/tarball/0.2.4) or clone this repository (current release: `0.2.4`)
 2. run the command `python setup.py install`
 
 ### Changelog
+* Version `0.2.4`
+  * a lot of bug fixes
 * Version `0.2.0`
   * added port argument
   * replaced dictionary argument with **keyword syntax
@@ -153,3 +155,6 @@ demo_db.close()
 ### About
 The wrapper has been written for a science project and is still an early alpha version!
 Idea and implementation by Florian (cansik)
+
+MIT License
+Copyright (c) 2015
