@@ -1,7 +1,7 @@
 from pg4nosql import DEFAULT_POSTGRES_HOST, DEFAULT_POSTGRES_DATABASE, DEFAULT_POSTGRES_PORT
 from pg4nosql.PostgresNoSQLClient import PostgresNoSQLClient
 import unittest
-from test import TEST_DB_HOST, TEST_DATABASE, TEST_TEMP_DATABASE, TEST_DB_USER, TEST_DB_PASSWORD
+from __init__ import TEST_DB_HOST, TEST_DATABASE, TEST_TEMP_DATABASE, TEST_DB_USER, TEST_DB_PASSWORD
 
 
 class PostgresNoSQLClientTest(unittest.TestCase):
