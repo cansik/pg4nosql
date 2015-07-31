@@ -90,7 +90,7 @@ class PostgresNoSQLClient(object):
             self.__cursor.execute(self.__SQL_DATABASE_EXISTS, (database_name,))
             exists = self.__cursor.fetchone()[0]
         except psycopg2.Error as e:
-            print e
+            print(e)
         self.__close()
         return exists
 

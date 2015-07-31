@@ -49,7 +49,7 @@ class PostgresNoSQLDatabase(object):
             self.cursor.execute(self.__SQL_TABLE_EXISTS, (table_name,))
             exists = self.cursor.fetchone()[0]
         except psycopg2.Error as e:
-            print e
+            print(e)
         return exists
 
     def __getitem__(self, item):
