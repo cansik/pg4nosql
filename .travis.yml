@@ -10,8 +10,9 @@ python:
   - "nightly"
 # command to install dependencies
 install: "pip install -r requirements.txt"
+install: python setup.py install
+
 # command to run tests
-script: python setup.py install
 script: python test/PostgresNoSQLClientTest.py
 script: python test/PostgresNoSQLDatabaseTest.py
 script: python test/PostgresNoSQLTableTest.py
