@@ -1,13 +1,13 @@
 from pg4nosql import DEFAULT_POSTGRES_HOST, DEFAULT_POSTGRES_DATABASE, DEFAULT_POSTGRES_PORT
 from pg4nosql.PostgresNoSQLClient import PostgresNoSQLClient
 import unittest
-from test import TEST_HOST, TEST_DATABASE, TEST_TEMP_DATABASE
+from test import TEST_DB_HOST, TEST_DATABASE, TEST_TEMP_DATABASE, TEST_DB_USER, TEST_DB_PASSWORD
 
 
 class PostgresNoSQLClientTest(unittest.TestCase):
 
     def setUp(self):
-        self.client = PostgresNoSQLClient(host=TEST_HOST)
+        self.client = PostgresNoSQLClient(host=TEST_DB_HOST, user=TEST_DB_USER, password=TEST_DB_PASSWORD)
         self.database = self.client.create_database(TEST_DATABASE)
         self.temp_db = None
 

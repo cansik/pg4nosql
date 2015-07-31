@@ -1,5 +1,6 @@
 from pg4nosql.PostgresNoSQLClient import PostgresNoSQLClient
-from test import TEST_HOST, TEST_DATABASE, TEST_TEMP_DATABASE, TEST_TABLE, TEST_TEMP_TABLE, RELATIONAL_FIELDS
+from test import TEST_DB_HOST, TEST_DATABASE, TEST_TEMP_DATABASE, TEST_TABLE, TEST_TEMP_TABLE, RELATIONAL_FIELDS, \
+    TEST_DB_USER, TEST_DB_PASSWORD
 
 __author__ = 'cansik'
 
@@ -9,7 +10,7 @@ import unittest
 class PostgresNoSQLDatabaseTest(unittest.TestCase):
 
     def setUp(self):
-        self.client = PostgresNoSQLClient(host=TEST_HOST)
+        self.client = PostgresNoSQLClient(host=TEST_DB_HOST, user=TEST_DB_USER, password=TEST_DB_PASSWORD)
         self.database = self.client.create_database(TEST_DATABASE)
         self.table = self.database.create_table(TEST_TABLE)
 

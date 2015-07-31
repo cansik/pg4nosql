@@ -1,4 +1,9 @@
-TEST_HOST = 'localhost'
+import os
+
+TEST_DB_HOST = 'localhost' if 'TRAVIS' not in os.environ else os.environ['DB_HOST']
+TEST_DB_USER = None if 'TRAVIS' not in os.environ else os.environ['DB_USER']
+TEST_DB_PASSWORD = None if 'TRAVIS' not in os.environ else os.environ['DB_PASSWORD']
+
 TEST_DATABASE = 'pg4nosql_test'
 TEST_TABLE = 'pg4nosql_table'
 TEST_RELATIONAL_TABLE = 'pg4nosql_rel_test'

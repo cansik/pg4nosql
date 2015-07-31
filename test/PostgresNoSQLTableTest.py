@@ -1,14 +1,14 @@
 from pg4nosql import DEFAULT_JSON_COLUMN_NAME
 from pg4nosql.PostgresNoSQLClient import PostgresNoSQLClient
-from test import TEST_HOST, TEST_TABLE, TEST_DATABASE, RELATIONAL_FIELDS, JSON_DATA, TEST_RELATIONAL_TABLE, \
-    RELATIONAL_DATA
+from test import TEST_DB_HOST, TEST_TABLE, TEST_DATABASE, RELATIONAL_FIELDS, JSON_DATA, TEST_RELATIONAL_TABLE, \
+    RELATIONAL_DATA, TEST_DB_USER, TEST_DB_PASSWORD
 
 import unittest
 
 
 class PostgresNoSQLTableTest(unittest.TestCase):
     def setUp(self):
-        self.client = PostgresNoSQLClient(host=TEST_HOST)
+        self.client = PostgresNoSQLClient(host=TEST_DB_HOST, user=TEST_DB_USER, password=TEST_DB_PASSWORD)
         self.database = self.client.create_database(TEST_DATABASE)
         self.table = self.database.create_table(TEST_TABLE)
         self.relational_table = self.database.create_table(TEST_RELATIONAL_TABLE, **RELATIONAL_FIELDS)
