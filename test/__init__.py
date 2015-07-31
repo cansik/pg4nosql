@@ -5,7 +5,7 @@ TEST_DB_USER = None if 'TRAVIS' not in os.environ else os.environ['DB_USER']
 TEST_DB_PASSWORD = None if 'TRAVIS' not in os.environ else os.environ['DB_PASSWORD']
 
 TEST_DATABASE = 'pg4nosql_test'
-TEST_TABLE = 'pg4nosql_table'
+TEST_TABLE = 'pg4nosql_table' + ('' if 'TRAVIS' not in os.environ else os.environ['TRAVIS_PYTHON_VERSION'])
 TEST_RELATIONAL_TABLE = 'pg4nosql_rel_test'
 
 TEST_TEMP_DATABASE = 'temp_db'
