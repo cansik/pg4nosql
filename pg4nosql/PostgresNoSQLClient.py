@@ -5,9 +5,6 @@ from pg4nosql.PostgresNoSQLDatabase import PostgresNoSQLDatabase
 
 
 class PostgresNoSQLClient(object):
-    """
-    Creates new connections and
-    """
 
     __SQL_DATABASE_EXISTS = 'SELECT EXISTS(SELECT datname FROM pg_database WHERE datname=%s)'
     __SQL_CREATE_DATABASE = 'CREATE DATABASE %s'

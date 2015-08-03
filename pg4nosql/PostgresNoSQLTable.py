@@ -6,9 +6,6 @@ from pg4nosql.PostgresNoSQLResultItem import PostgresNoSQLResultItem
 
 
 class PostgresNoSQLTable(object):
-    """
-    Represents the a postgres table.
-    """
 
     __SQL_INSERT_JSON = "INSERT INTO %s(" + DEFAULT_JSON_COLUMN_NAME + " %s) VALUES(%s %s) RETURNING " + DEFAULT_ROW_IDENTIFIER
     __SQL_QUERY_JSON = 'SELECT %s FROM %s WHERE %s'
