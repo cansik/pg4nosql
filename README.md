@@ -1,5 +1,6 @@
 # pg4nosql
 [![Build Status](https://travis-ci.org/cansik/pg4nosql.svg)](https://travis-ci.org/cansik/pg4nosql) [![Code Climate](https://codeclimate.com/github/cansik/pg4nosql/badges/gpa.svg)](https://codeclimate.com/github/cansik/pg4nosql)
+
 A simple psycopg2 based wrapper for nosql like database interaction with python.
 
 ### Background
