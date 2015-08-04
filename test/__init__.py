@@ -1,7 +1,7 @@
 import os
 
-TEST_DB_HOST = 'localhost' if 'TRAVIS' not in os.environ else os.environ['DB_HOST']
-TEST_DB_USER = None if 'TRAVIS' not in os.environ else os.environ['DB_USER']
+TEST_DB_HOST = '192.168.99.100' if 'TRAVIS' not in os.environ else os.environ['DB_HOST']
+TEST_DB_USER = 'postgres' if 'TRAVIS' not in os.environ else os.environ['DB_USER']
 TEST_DB_PASSWORD = None if 'TRAVIS' not in os.environ else os.environ['DB_PASSWORD']
 
 TEST_PYTHON_VERSION = ('' if 'TRAVIS' not in os.environ else os.environ['TRAVIS_PYTHON_VERSION']).replace('.', '_')
