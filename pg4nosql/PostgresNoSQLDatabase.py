@@ -23,7 +23,7 @@ class PostgresNoSQLDatabase(object):
 
     def create_table(self, table_name, **relational_columns):
         # create additional columns string
-        columns_str = ''.join(', %s %s' % (key, val) for (key, val) in relational_columns.iteritems())
+        columns_str = ''.join(', %s %s' % (key, val) for (key, val) in relational_columns.items())
         self.cursor.execute(self.__SQL_CREATE_JSON_TABLE, (AsIs(table_name), AsIs(columns_str)))
         self.commit()
         return PostgresNoSQLTable(table_name, self.connection)
