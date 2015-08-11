@@ -19,6 +19,10 @@ During alpha stage the api will change with each build. So try to stay with one 
 2. run the command `python setup.py install`
 
 ### Changelog
+* Version `0.3.1`
+  * auto-commit for very operation as default
+  * save does not affect saving object anymore
+  * bug fixes
 * Version `0.2.4`
   * a lot of bug fixes
 * Version `0.2.0`
