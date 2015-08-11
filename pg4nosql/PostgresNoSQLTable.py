@@ -1,3 +1,4 @@
+import copy
 import json
 from psycopg2.extensions import AsIs
 from psycopg2.extras import RealDictCursor
@@ -53,7 +54,7 @@ class PostgresNoSQLTable(object):
         return self.cursor.fetchone()[DEFAULT_ROW_IDENTIFIER]
 
     def save(self, record):
-        record = record.get_record()
+        record = copy.deepcopy(record.get_record())
 
         data = record.pop(DEFAULT_JSON_COLUMN_NAME)
         object_id = record.pop(DEFAULT_ROW_IDENTIFIER)
