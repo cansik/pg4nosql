@@ -101,8 +101,10 @@ class PostgresNoSQLTable(object):
         columns = map(lambda m: m['column_name'], self.cursor.fetchall())
         return columns
 
-    def delete(self, object_id):
+    def delete(self, object_id, auto_commit=True):
         self.cursor.execute(self.__SQL_DELETE_JSON, (AsIs(self.name), object_id))
+        if auto_commit:
+            self.commit()
 
     def execute(self, sql_query):
         self.cursor.execute(sql_query)
