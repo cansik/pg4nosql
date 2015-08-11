@@ -8,6 +8,14 @@ class PostgresNoSQLClientTest(unittest.TestCase):
 
     def setUp(self):
         self.client = PostgresNoSQLClient(host=TEST_DB_HOST, user=TEST_DB_USER, password=TEST_DB_PASSWORD)
+
+        # pre init cleanup
+        if self.client.database_exists(TEST_TEMP_DATABASE):
+            self.client.drop_database(TEST_TEMP_DATABASE)
+
+        if self.client.database_exists(TEST_TEMP_DATABASE):
+            self.client.drop_database(TEST_TEMP_DATABASE)
+
         self.database = self.client.create_database(TEST_DATABASE)
         self.temp_db = None
 

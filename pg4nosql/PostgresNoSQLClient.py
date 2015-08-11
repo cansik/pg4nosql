@@ -78,6 +78,7 @@ class PostgresNoSQLClient(object):
     def drop_database(self, database_name):
         self.__connect()
         self.__cursor.execute(self.__SQL_DROP_DATABASE, (AsIs(database_name),))
+        self.__commit()
         self.__close()
 
     def database_exists(self, database_name):
