@@ -34,9 +34,13 @@ class PostgresNoSQLTable(object):
         return "'" + str(obj) + "'"
 
     def commit(self):
+        """
+        Use commit only if auto_commit in put or save are disabled!
+        :return: None
+        """
         self.connection.commit()
 
-    def put(self, json_data, **relational_data):
+    def put(self, json_data, auto_commit=True, **relational_data):
         # filter none values out
         relational_data = {k: v for (k, v) in relational_data.items() if v is not None}
 
@@ -51,9 +55,12 @@ class PostgresNoSQLTable(object):
         self.cursor.execute(self.__SQL_INSERT_JSON, (AsIs(self.name),
                                                      AsIs(relational_data_columns), json.dumps(json_data),
                                                      AsIs(relational_data_values)))
+        if auto_commit:
+            self.commit()
+
         return self.cursor.fetchone()[DEFAULT_ROW_IDENTIFIER]
 
-    def save(self, record):
+    def save(self, record, auto_commit=True):
         record = copy.deepcopy(record.get_record())
 
         data = record.pop(DEFAULT_JSON_COLUMN_NAME)
@@ -64,6 +71,9 @@ class PostgresNoSQLTable(object):
 
         self.cursor.execute(self.__SQL_UPDATE_JSON, (AsIs(self.name),
                                                      json.dumps(data), AsIs(relational_data_sql), object_id))
+
+        if auto_commit:
+            self.commit()
 
     def get(self, object_id):
         self.cursor.execute(self.__SQL_GET_JSON, (AsIs(self.name), object_id))

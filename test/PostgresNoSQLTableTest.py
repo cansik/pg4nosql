@@ -57,6 +57,12 @@ class PostgresNoSQLTableTest(unittest.TestCase):
         record = self.relational_table.get(id)
         self.assertEqual(179.5, record['height'])
 
+    def test_put_relational_without_auto_commit(self):
+        id = self.relational_table.put(JSON_DATA, auto_commit=False, **RELATIONAL_DATA)
+        self.relational_table.connection.rollback()
+        record = self.relational_table.get(id)
+        self.assertEqual(None, record)
+
     def test_put_relational_with_none(self):
         id = self.relational_table.put(JSON_DATA, name='florian', age=24, height=None)
         record = self.relational_table.get(id)
@@ -89,6 +95,22 @@ class PostgresNoSQLTableTest(unittest.TestCase):
         self.relational_table.save(record)
         record = self.relational_table.get(self.first_relational)
         self.assertEqual(25, record['age'])
+
+    def test_save_auto_commit(self):
+        record = self.relational_table.get(self.first_relational)
+        record['age'] = 25
+        self.relational_table.save(record)
+        self.relational_table.connection.rollback()
+        record = self.relational_table.get(self.first_relational)
+        self.assertEqual(25, record['age'])
+
+    def test_save_without_auto_commit(self):
+        record = self.relational_table.get(self.first_relational)
+        record['age'] = 25
+        self.relational_table.save(record, auto_commit=False)
+        self.relational_table.connection.rollback()
+        record = self.relational_table.get(self.first_relational)
+        self.assertEqual(24, record['age'])
 
     def test_save_relational_with_none(self):
         record = self.relational_table.get(self.first_relational)
