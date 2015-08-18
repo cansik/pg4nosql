@@ -1,9 +1,8 @@
 # pg4nosql
----
 
 [![Build Status](https://travis-ci.org/cansik/pg4nosql.svg)](https://travis-ci.org/cansik/pg4nosql)
 [![Code Climate](https://codeclimate.com/github/cansik/pg4nosql/badges/gpa.svg)](https://codeclimate.com/github/cansik/pg4nosql)
-[![Latest Version](https://img.shields.io/pypi/v/pg4nosql.svg)]()
+[![Latest Version](https://img.shields.io/pypi/v/pg4nosql.svg)](https://pypi.python.org/pypi/pg4nosql)
 [![Development Status](https://img.shields.io/pypi/status/pg4nosql.svg)](https://pypi.python.org/pypi/pg4nosql)
 [![Python Versions](https://img.shields.io/pypi/pyversions/pg4nosql.svg)](https://pypi.python.org/pypi/pg4nosql)
 [![License](https://img.shields.io/pypi/l/pg4nosql.svg)](https://github.com/cansik/pg4nosql/blob/master/LICENSE.txt)
