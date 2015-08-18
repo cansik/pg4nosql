@@ -1,7 +1,16 @@
-# pg4nosql  [![Build Status](https://travis-ci.org/cansik/pg4nosql.svg)](https://travis-ci.org/cansik/pg4nosql) [![Code Climate](https://codeclimate.com/github/cansik/pg4nosql/badges/gpa.svg)](https://codeclimate.com/github/cansik/pg4nosql)
+# pg4nosql
+---
+
+[![Build Status](https://travis-ci.org/cansik/pg4nosql.svg)](https://travis-ci.org/cansik/pg4nosql)
+[![Code Climate](https://codeclimate.com/github/cansik/pg4nosql/badges/gpa.svg)](https://codeclimate.com/github/cansik/pg4nosql)
+[![Latest Version](https://img.shields.io/pypi/v/pg4nosql.svg)]()
+[![Development Status](https://img.shields.io/pypi/status/pg4nosql.svg)](https://pypi.python.org/pypi/pg4nosql)
+[![Python Versions](https://img.shields.io/pypi/pyversions/pg4nosql.svg)](https://pypi.python.org/pypi/pg4nosql)
+[![License](https://img.shields.io/pypi/l/pg4nosql.svg)](https://github.com/cansik/pg4nosql/blob/master/LICENSE.txt)
+
 A simple psycopg2 based wrapper for nosql like database interaction with python.
 
-### Background
+### Why another wrapper?
 The wrapper was developed to work with JSON postgres storage like a real NoSQL DB (e.g. MongoDB). After a long research with google there was no library found which helps to work with JSON and PostgreSQL so I decided to develop one.
 
 The strength of the wrapper is that you still can have multiple relational colums in your table.
@@ -12,13 +21,15 @@ The strength of the wrapper is that you still can have multiple relational colum
 Just run the command:
 `pip install pg4nosql`
 
-During alpha stage the api will change with each build. So try to stay with one version if you want to use it.
+*During alpha stage the api will change with each build. So try to stay with one version if you want to use it.*
 
 ##### The hacky way (newer release)
-1. [download](https://github.com/cansik/pg4nosql/tarball/0.2.4) or clone this repository (current release: `0.2.4`)
+1. [download](https://github.com/cansik/pg4nosql/tarball/0.2.4) or clone this repository
 2. run the command `python setup.py install`
 
 ### Changelog
+* Version `0.3.2`
+  * project cleanup
 * Version `0.3.1`
   * auto-commit for very operation as default
   * save does not affect saving object anymore
