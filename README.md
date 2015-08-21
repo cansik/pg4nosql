@@ -27,7 +27,7 @@ Just run the command:
 2. run the command `python setup.py install`
 
 ### Changelog
-* Version `0.3.5`
+* Version `0.3.6`
   * id datatype can be set on table creation
 * Version `0.3.3`
   * project cleanup

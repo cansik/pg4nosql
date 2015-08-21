@@ -8,7 +8,7 @@ except (IOError, ImportError):
 
 setup(
     name='pg4nosql',
-    version='0.3.5',
+    version='0.3.6',
     packages=['pg4nosql'],
     url='https://github.com/cansik/pg4nosql',
     license='MIT License',
@@ -16,7 +16,7 @@ setup(
     author_email='florian@nexpose.ch',
     description='A simple psycopg2 based wrapper for nosql like database interaction with python.',
     long_description=description,
-    download_url='https://github.com/cansik/pg4nosql/tarball/0.3.5',
+    download_url='https://github.com/cansik/pg4nosql/tarball/0.3.6',
     keywords=['postgres', 'nosql', 'wrapper', 'database', 'json'],
     install_requires=['psycopg2'],
     classifiers=[
