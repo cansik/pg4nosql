@@ -15,9 +15,6 @@ class PostgresNoSQLDatabaseTest(unittest.TestCase):
         # pre cleanup
         if self.client.database_exists(TEST_DATABASE):
             self.client.drop_database(TEST_DATABASE)
-            print('DB TRUE (%s)' % TEST_DATABASE)
-        else:
-            print('DB FALSE (%s)' % TEST_DATABASE)
 
         self.database = self.client.create_database(TEST_DATABASE)
         self.table = self.database.create_table(TEST_TABLE)
@@ -46,6 +43,10 @@ class PostgresNoSQLDatabaseTest(unittest.TestCase):
 
     def test_create_table(self):
         temp = self.database.create_table(TEST_TEMP_TABLE)
+        self.assertEqual(TEST_TEMP_TABLE, temp.name)
+
+    def test_create_table_with_bigserial(self):
+        temp = self.database.create_table(TEST_TEMP_TABLE, row_identifier_type='BIGSERIAL')
         self.assertEqual(TEST_TEMP_TABLE, temp.name)
 
     def test_create_table_with_relational_fields(self):

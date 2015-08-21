@@ -1,11 +1,11 @@
 import psycopg2
 from psycopg2.extensions import AsIs
-from pg4nosql import DEFAULT_JSON_COLUMN_NAME
+from pg4nosql import DEFAULT_JSON_COLUMN_NAME, DEFAULT_ROW_IDENTIFIER, DEFAULT_ROW_IDENTIFIER_TYPE
 from pg4nosql.PostgresNoSQLTable import PostgresNoSQLTable
 
 
 class PostgresNoSQLDatabase(object):
-    __SQL_CREATE_JSON_TABLE = 'CREATE TABLE %s (id SERIAL PRIMARY KEY %s, ' + DEFAULT_JSON_COLUMN_NAME + ' JSON);'
+    __SQL_CREATE_JSON_TABLE = 'CREATE TABLE %s (%s %s PRIMARY KEY %s, ' + DEFAULT_JSON_COLUMN_NAME + ' JSON);'
     __SQL_DROP_JSON_TABLE = 'DROP TABLE IF EXISTS %s;'
     __SQL_TABLE_EXISTS = "SELECT EXISTS(SELECT relname FROM pg_class WHERE relname=%s)"
 
@@ -24,10 +24,14 @@ class PostgresNoSQLDatabase(object):
         self.cursor.execute(sql_query)
         return self.cursor.fetchall()
 
-    def create_table(self, table_name, **relational_columns):
+    def create_table(self, table_name, row_identifier_type=DEFAULT_ROW_IDENTIFIER_TYPE, **relational_columns):
         # create additional columns string
         columns_str = ''.join(', %s %s' % (key, val) for (key, val) in relational_columns.items())
-        self.cursor.execute(self.__SQL_CREATE_JSON_TABLE, (AsIs(table_name), AsIs(columns_str)))
+        self.cursor.execute(self.__SQL_CREATE_JSON_TABLE,
+                            (AsIs(table_name),
+                             AsIs(DEFAULT_ROW_IDENTIFIER),
+                             AsIs(row_identifier_type),
+                             AsIs(columns_str)))
         self.commit()
         return PostgresNoSQLTable(table_name, self.connection)
 
@@ -41,10 +45,10 @@ class PostgresNoSQLDatabase(object):
         else:
             return None
 
-    def get_or_create_table(self, table_name, **relational_columns):
+    def get_or_create_table(self, table_name, row_identifier_type=DEFAULT_ROW_IDENTIFIER_TYPE, **relational_columns):
         table = self.get_table(table_name)
         if not table:
-            table = self.create_table(table_name, **relational_columns)
+            table = self.create_table(table_name, row_identifier_type=row_identifier_type, **relational_columns)
         return table
 
     def table_exists(self, table_name):

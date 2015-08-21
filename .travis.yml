@@ -3,8 +3,6 @@ notifications:
 language: python
 python:
   - "2.7"
-  - "3.2"
-  - "3.3"
   - "3.4"
 #  - "3.5.0b3"
 #  - "3.5-dev"
@@ -21,3 +19,6 @@ script:
   - "python test/PostgresNoSQLClientTest.py"
   - "python test/PostgresNoSQLDatabaseTest.py"
   - "python test/PostgresNoSQLTableTest.py"
+
+after_success:
+  - coveralls

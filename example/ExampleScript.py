@@ -11,6 +11,9 @@ def main():
     # create document only table
     users = demo_db['users']
 
+    # create document table with bigserial
+    big_users = demo_db.create_table('big_users', row_identifier_type='BIGSERIAL')
+
     # create document & relational table
     cities = demo_db.get_or_create_table('cities', size='real')
 
@@ -29,8 +32,12 @@ def main():
     cities.put({'name': 'Bern'}, size=51.6)
     cities.put({'name': 'London'}, size=1572)
 
+    # store data with lazy commit
+    for i in range(0, 255):
+        users.put({'name': 'Test', 'age': i}, auto_commit=False)
+
     # commit data
-    demo_db.commit()
+    users.commit()
 
     # query all users which are 24 years old
     users_24 = users.query("json->>'age'='24'")

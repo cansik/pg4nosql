@@ -22,12 +22,14 @@ Just run the command:
 
 *During alpha stage the api will change with each build. So try to stay with one version if you want to use it.*
 
-##### The hacky way (newer release)
+##### The hacky way
 1. [download](https://github.com/cansik/pg4nosql/tarball/0.2.4) or clone this repository
 2. run the command `python setup.py install`
 
 ### Changelog
-* Version `0.3.2`
+* Version `0.3.5`
+  * id datatype can be set on table creation
+* Version `0.3.3`
   * project cleanup
 * Version `0.3.1`
   * auto-commit for very operation as default
@@ -69,6 +71,15 @@ users = demo_db['users']
 cities = demo_db.get_or_create_table('cities', size='real NOT NULL')
 ```
 
+###### Row Identifier Type
+By default the `id` row type is `SERIAL` but in some cases it is necessary to define the type yourself. This is possible with the `row_identifier_type` argument.
+
+```python
+# create document table with bigserial
+big_users = demo_db.create_table('big_users',
+								  row_identifier_type='BIGSERIAL')
+```
+
 ##### Insert Data
 To insert data into the table you just hand over a dictionary or an object which is json serializable. If there are relational columns defined you can set those by the table name as keyword and the value:
 
@@ -84,9 +95,18 @@ cities.put({'name': 'Zurich'}, size=87.88)
 cities.put({'name': 'Berlin'}, size=891.8)
 cities.put({'name': 'Bern'}, size=51.6)
 cities.put({'name': 'London'}, size=1572)
+```
 
-# commit data
-demo_db.commit()
+###### Lazy Commit
+If you want to store or save multiple entries you can set the `auto_commit` argument to `False` and commit it yourself.
+
+```python
+# store data with lazy commit
+for i in range(0, 255):
+    users.put({'name': 'Test', 'age': i}, auto_commit=False)
+
+# lazy commit data
+users.commit()
 ```
 
 ##### Query Data
@@ -145,7 +165,6 @@ florian = users_24[0]
 florian.json['age'] = 25
 
 users.save(florian)
-users.commit()
 ```
 The same works also for the `relational` fields:
 
@@ -155,7 +174,6 @@ zurich = cities.query_one("data->>'name'='Zurich'")
 zurich['size'] = 90
 
 cities.save(zurich)
-cities.commit()
 ```
 
 ##### Close Connection
