@@ -20,7 +20,6 @@ script:
   - "python test/PostgresNoSQLClientTest.py"
   - "python test/PostgresNoSQLDatabaseTest.py"
   - "python test/PostgresNoSQLTableTest.py"
-  - "coverage run --source=pg4nosql setup.py test"
 
 after_success:
   - coveralls
