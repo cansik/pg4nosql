@@ -27,6 +27,8 @@ Just run the command:
 2. run the command `python setup.py install`
 
 ### Changelog
+* Version `0.3.7`
+  * Adds the support for non-json database tables
 * Version `0.3.6`
   * id datatype can be set on table creation
 * Version `0.3.3`
@@ -97,6 +99,13 @@ cities.put({'name': 'Bern'}, size=51.6)
 cities.put({'name': 'London'}, size=1572)
 ```
 
+If you work **without json documents**, there is just a normal `insert` method to store new records into a table.
+
+```python
+# store data into cities table
+users.insert(age=25, name="Florian")
+```
+
 ###### Lazy Commit
 If you want to store or save multiple entries you can set the `auto_commit` argument to `False` and commit it yourself.
 
@@ -155,6 +164,12 @@ To **access** the **relational** fields of the result you have to use **square b
 # read relational attribute
 city_size = first_city['size']
 ```
+There is also a default field called `id` which contains the default row identifier for easy access:
+
+```python
+# get id of row
+city_id = first_city.id
+```
 
 ##### Update Data
 With those access methods you can also write into the result and change the values of the fields. To save it just call `save(obj)` on the table object.
@@ -166,7 +181,7 @@ florian.json['age'] = 25
 
 users.save(florian)
 ```
-The same works also for the `relational` fields:
+The same works also with the `relational` fields:
 
 ```python
 # make zurich a bit bigger
@@ -174,6 +189,23 @@ zurich = cities.query_one("data->>'name'='Zurich'")
 zurich['size'] = 90
 
 cities.save(zurich)
+```
+
+**Without json documents**, there is just a normal `update` method to update new records into a table.
+
+```python
+# store data into cities table
+florian = users_24[0]
+florian['name'] = 'Markus'
+users.update(florian)
+```
+
+##### Direct Execution
+It is also possible to directly execute sql statements as you are used to. The execute function is declared on the database object and on the table object.
+
+```python
+# run simple sql query
+my_data = demo_db.execute('SELECT * FROM cities')
 ```
 
 ##### Close Connection
