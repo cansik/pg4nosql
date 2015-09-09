@@ -80,39 +80,12 @@ class PostgresNoSQLTable(object):
             self.commit()
 
     def put(self, json_data, auto_commit=True, **relational_data):
-        # filter none values out
-        relational_data = {k: v for (k, v) in relational_data.items() if v is not None}
+        relational_data.update(DEFAULT_JSON_COLUMN_NAME, json_data)
+        return self.insert(auto_commit=auto_commit, **relational_data)
 
-        # todo: replace string concatenation with a beautiful solution
-        relational_data_columns = ''
-        relational_data_values = ''
-
-        if relational_data:
-            relational_data_columns = ',' + ",".join(relational_data.keys())
-            relational_data_values = ",'" + "','".join(map(str, relational_data.values())) + "'"
-
-        self.cursor.execute(self.__SQL_INSERT_JSON, (AsIs(self.name),
-                                                     AsIs(relational_data_columns), json.dumps(json_data),
-                                                     AsIs(relational_data_values)))
-        if auto_commit:
-            self.commit()
-
-        return self.cursor.fetchone()[DEFAULT_ROW_IDENTIFIER]
-
+    # todo: mark as deprecated code
     def save(self, record, auto_commit=True):
-        record = copy.deepcopy(record.get_record())
-
-        data = record.pop(DEFAULT_JSON_COLUMN_NAME)
-        object_id = record.pop(DEFAULT_ROW_IDENTIFIER)
-
-        relational_data_sql = ''.join(
-            ", %s=%s" % (key, self.__to_nullable_string(val)) for (key, val) in record.items())
-
-        self.cursor.execute(self.__SQL_UPDATE_JSON, (AsIs(self.name),
-                                                     json.dumps(data), AsIs(relational_data_sql), object_id))
-
-        if auto_commit:
-            self.commit()
+        self.update(record, auto_commit=auto_commit)
 
     def get(self, object_id):
         self.cursor.execute(self.__SQL_GET_JSON, (AsIs(self.name), object_id))
