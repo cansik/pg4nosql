@@ -1,4 +1,4 @@
-from pg4nosql import DEFAULT_JSON_COLUMN_NAME
+from pg4nosql import DEFAULT_JSON_COLUMN_NAME, DEFAULT_ROW_IDENTIFIER
 
 
 class PostgresNoSQLResultItem(object):
@@ -7,6 +7,7 @@ class PostgresNoSQLResultItem(object):
         self.__inner_result = inner_result
         self.json = self.PostgresNoSQLJSONDocument(self.__inner_result)
         self.columns = self.__inner_result.keys()
+        self.id = self.__inner_result.get(DEFAULT_ROW_IDENTIFIER, None)
 
     def __str__(self):
         return str(self.__inner_result)
