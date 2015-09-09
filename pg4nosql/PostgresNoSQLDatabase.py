@@ -1,5 +1,6 @@
 import psycopg2
 from psycopg2.extensions import AsIs
+from psycopg2.extras import RealDictCursor
 from pg4nosql import DEFAULT_JSON_COLUMN_NAME, DEFAULT_ROW_IDENTIFIER, DEFAULT_ROW_IDENTIFIER_TYPE
 from pg4nosql.PostgresNoSQLTable import PostgresNoSQLTable
 
@@ -12,6 +13,8 @@ class PostgresNoSQLDatabase(object):
     def __init__(self, name, host, port, user, password):
         self.name = name
         self.connection = psycopg2.connect(host=host, database=name, port=port, user=user, password=password)
+        self.tuple_cursor = self.connection.cursor()
+        self.connection.cursor_factory = RealDictCursor
         self.cursor = self.connection.cursor()
 
     def close(self):
@@ -54,8 +57,8 @@ class PostgresNoSQLDatabase(object):
     def table_exists(self, table_name):
         exists = False
         try:
-            self.cursor.execute(self.__SQL_TABLE_EXISTS, (table_name,))
-            exists = self.cursor.fetchone()[0]
+            self.tuple_cursor.execute(self.__SQL_TABLE_EXISTS, (table_name,))
+            exists = self.tuple_cursor.fetchone()[0]
         except psycopg2.Error as e:
             print(e)
         return exists

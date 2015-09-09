@@ -30,11 +30,6 @@ class PostgresNoSQLTableTest(unittest.TestCase):
         if self.client.database_exists(self.database.name):
             self.client.drop_database(self.database.name)
 
-        # self.relational_table = None
-        # self.table = None
-        self.database = None
-        self.client = None
-
     def test_get_empty_record(self):
         record = self.table.get(self.first+1)
         self.assertEqual(None, record)
@@ -46,6 +41,11 @@ class PostgresNoSQLTableTest(unittest.TestCase):
     def test_get_relational_field(self):
         record = self.relational_table.get(self.first_relational)
         self.assertEqual(24, record['age'])
+
+    def test_insert(self):
+        id = self.relational_table.insert(name="pascal", age=22, height=182)
+        record = self.relational_table.get(id)
+        self.assertEqual(22, record['age'])
 
     def test_put_json(self):
         id = self.table.put(JSON_DATA)
@@ -72,6 +72,13 @@ class PostgresNoSQLTableTest(unittest.TestCase):
         id = self.relational_table.put(JSON_DATA, name='florian', age=24, height=None)
         record = self.relational_table.get(id)
         self.assertEqual(None, record['height'])
+
+    def test_update(self):
+        record = self.relational_table.get(self.first_relational)
+        record['age'] = 5
+        self.relational_table.update(record)
+        record = self.relational_table.get(self.first_relational)
+        self.assertEqual(5, record['age'])
 
     def test_save_json(self):
         record = self.table.get(self.first)
