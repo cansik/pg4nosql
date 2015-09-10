@@ -46,15 +46,15 @@ class PostgresNoSQLTable(object):
         self.connection.commit()
 
     def insert(self, auto_commit=True, **data):
-        # filter none values out
-        relational_data = {k: v for (k, v) in data.items() if v is not None}
+        relational_data = data
 
         relational_data_columns = ''
         relational_data_values = ''
 
         if relational_data:
             relational_data_columns = ",".join(relational_data.keys())
-            relational_data_values = "'" + "','".join(map(str, relational_data.values())) + "'"
+            data_list = map(str, map(self.__to_nullable_string, relational_data.values()))
+            relational_data_values = ",".join(data_list)
 
         self.cursor.execute(self.__SQL_INSERT, (AsIs(self.name),
                                                 AsIs(relational_data_columns),
@@ -80,7 +80,7 @@ class PostgresNoSQLTable(object):
             self.commit()
 
     def put(self, json_data, auto_commit=True, **relational_data):
-        relational_data.update(DEFAULT_JSON_COLUMN_NAME, json_data)
+        relational_data.update({DEFAULT_JSON_COLUMN_NAME: json_data})
         return self.insert(auto_commit=auto_commit, **relational_data)
 
     # todo: mark as deprecated code
