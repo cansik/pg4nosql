@@ -17,7 +17,7 @@ setup(
     description='A simple psycopg2 based wrapper for nosql like database interaction with python.',
     long_description=description,
     download_url='https://github.com/cansik/pg4nosql/tarball/0.3.8',
-    keywords=['postgres', 'nosql', 'wrapper', 'database', 'json'],
+    keywords=['postgres', 'no', 'sql', 'wrapper', 'database', 'json'],
     install_requires=['psycopg2'],
     classifiers=[
         'Programming Language :: Python',
