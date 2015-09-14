@@ -65,13 +65,9 @@ class PostgresNoSQLTable(object):
 
         return self.cursor.fetchone()[DEFAULT_ROW_IDENTIFIER]
 
-    def update(self, record, auto_commit=True):
-        record = copy.deepcopy(record.get_record())
-
-        object_id = record.pop(DEFAULT_ROW_IDENTIFIER)
-
+    def update(self, object_id, auto_commit=True, **relational_data):
         relational_data_sql = ','.join(
-            "%s=%s" % (key, str(self.__to_nullable_string(val))) for (key, val) in record.items())
+            "%s=%s" % (key, str(self.__to_nullable_string(val))) for (key, val) in relational_data.items())
 
         self.cursor.execute(self.__SQL_UPDATE, (AsIs(self.name),
                                                 AsIs(relational_data_sql), object_id))
@@ -83,9 +79,10 @@ class PostgresNoSQLTable(object):
         relational_data.update({DEFAULT_JSON_COLUMN_NAME: json_data})
         return self.insert(auto_commit=auto_commit, **relational_data)
 
-    # todo: mark as deprecated code
     def save(self, record, auto_commit=True):
-        self.update(record, auto_commit=auto_commit)
+        data = copy.deepcopy(record.get_record())
+        object_id = data.pop(DEFAULT_ROW_IDENTIFIER)
+        self.update(object_id, auto_commit=auto_commit, **data)
 
     def get(self, object_id):
         self.cursor.execute(self.__SQL_GET_JSON, (AsIs(self.name), object_id))

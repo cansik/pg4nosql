@@ -75,8 +75,7 @@ class PostgresNoSQLTableTest(unittest.TestCase):
 
     def test_update(self):
         record = self.relational_table.get(self.first_relational)
-        record['age'] = 5
-        self.relational_table.update(record)
+        self.relational_table.update(record.id, age=5)
         record = self.relational_table.get(self.first_relational)
         self.assertEqual(5, record['age'])
 
