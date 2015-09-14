@@ -23,12 +23,16 @@ Just run the command:
 *During alpha stage the api will change with each build. So try to stay with one version if you want to use it.*
 
 ##### The hacky way
-1. [download](https://github.com/cansik/pg4nosql/tarball/0.2.4) or clone this repository
+1. [download](https://github.com/cansik/pg4nosql/tarball/0.4.0) or clone this repository
 2. run the command `python setup.py install`
 
 ### Changelog
+* Version `0.4.0`
+  * adds join query statements
+  * adds update method
+  * adds save method on result item
 * Version `0.3.7`
-  * Adds the support for non-json database tables
+  * adds the support for non-json database tables
 * Version `0.3.6`
   * id datatype can be set on table creation
 * Version `0.3.3`

@@ -3,7 +3,7 @@ from distutils.core import setup
 try:
     import pypandoc
     description = pypandoc.convert('README.md', 'rst')
-except (IOError, ImportError):
+except:
     description = ''
 
 setup(
