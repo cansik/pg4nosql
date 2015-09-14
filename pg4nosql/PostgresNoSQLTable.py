@@ -96,7 +96,7 @@ class PostgresNoSQLTable(object):
     def query(self, query='True', columns='*'):
         self.cursor.execute(self.__SQL_QUERY_JSON, (AsIs(columns), AsIs(self.name), AsIs(query)))
         rows = [item for item in self.cursor.fetchall()]
-        items = map(lambda r: PostgresNoSQLResultItem(r), rows)
+        items = map(lambda r: PostgresNoSQLResultItem(r, self), rows)
         return items
 
     def query_one(self, query='True', columns='*'):

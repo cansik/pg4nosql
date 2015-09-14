@@ -137,6 +137,10 @@ class PostgresNoSQLTableTest(unittest.TestCase):
         record = self.relational_table.get(self.first_relational)
         self.assertEqual(None, record['height'])
 
+    def test_query(self):
+        records = self.relational_table.query()
+        self.assertNotEqual(None, records)
+
     def test_delete_record(self):
         self.table.delete(self.first)
         record = self.table.get(self.first)
