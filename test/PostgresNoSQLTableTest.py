@@ -79,6 +79,13 @@ class PostgresNoSQLTableTest(unittest.TestCase):
         record = self.relational_table.get(self.first_relational)
         self.assertEqual(5, record['age'])
 
+    def test_save_on_item(self):
+        record = self.relational_table.get(self.first_relational)
+        record['age'] = 5
+        record.save()
+        record = self.relational_table.get(self.first_relational)
+        self.assertEqual(5, record['age'])
+
     def test_save_json(self):
         record = self.table.get(self.first)
         record.json['items'] = 15

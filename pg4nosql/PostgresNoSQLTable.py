@@ -91,7 +91,7 @@ class PostgresNoSQLTable(object):
         if record is None:
             return record
 
-        return PostgresNoSQLResultItem(record)
+        return PostgresNoSQLResultItem(record, self)
 
     def query(self, query='True', columns='*'):
         self.cursor.execute(self.__SQL_QUERY_JSON, (AsIs(columns), AsIs(self.name), AsIs(query)))
