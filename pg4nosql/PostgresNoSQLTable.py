@@ -18,6 +18,8 @@ class PostgresNoSQLTable(object):
     __SQL_INSERT = "INSERT INTO %s(%s) VALUES(%s) RETURNING " + DEFAULT_ROW_IDENTIFIER
     __SQL_UPDATE = 'UPDATE %s SET %s WHERE ' + DEFAULT_ROW_IDENTIFIER + '=%s;'
 
+    __SQL_QUERY_WITH_JOIN = 'SELECT %s FROM %s AS a JOIN %s AS b ON %s WHERE %s'
+
     def __init__(self, name, connection):
         self.name = name
         self.connection = connection
@@ -95,6 +97,16 @@ class PostgresNoSQLTable(object):
 
     def query(self, query='True', columns='*'):
         self.cursor.execute(self.__SQL_QUERY_JSON, (AsIs(columns), AsIs(self.name), AsIs(query)))
+        rows = [item for item in self.cursor.fetchall()]
+        items = map(lambda r: PostgresNoSQLResultItem(r, self), rows)
+        return items
+
+    def query_join(self, table_name, on_statement, query='True', columns='*'):
+        self.cursor.execute(self.__SQL_QUERY_WITH_JOIN, (AsIs(columns),
+                                                         AsIs(self.name),
+                                                         AsIs(table_name),
+                                                         AsIs(on_statement),
+                                                         AsIs(query)))
         rows = [item for item in self.cursor.fetchall()]
         items = map(lambda r: PostgresNoSQLResultItem(r, self), rows)
         return items
