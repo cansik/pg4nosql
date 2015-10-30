@@ -23,10 +23,12 @@ Just run the command:
 *During alpha stage the api will change with each build. So try to stay with one version if you want to use it.*
 
 ##### The hacky way
-1. [download](https://github.com/cansik/pg4nosql/tarball/0.4.1) or clone this repository
+1. [download](https://github.com/cansik/pg4nosql/tarball/0.4.2) or clone this repository
 2. run the command `python setup.py install`
 
 ### Changelog
+* Version `0.4.2`
+  * fixed python 3.3 iterator return
 * Version `0.4.1`
   * Query from view
   * fixed some bugs

@@ -20,4 +20,4 @@ class PostgresNoSQLQueryStructure(object):
                             (AsIs(columns), AsIs(self.name), AsIs(query)))
         rows = [item for item in self.cursor.fetchall()]
         items = map(lambda r: PostgresNoSQLResultItem(r, self), rows)
-        return items
+        return list(items)

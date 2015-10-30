@@ -8,7 +8,7 @@ except:
 
 setup(
     name='pg4nosql',
-    version='0.4.1',
+    version='0.4.2',
     packages=['pg4nosql'],
     url='https://github.com/cansik/pg4nosql',
     license='MIT License',
