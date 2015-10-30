@@ -3,13 +3,13 @@ import json
 from psycopg2.extensions import AsIs
 from psycopg2.extras import RealDictCursor
 from pg4nosql import DEFAULT_JSON_COLUMN_NAME, DEFAULT_ROW_IDENTIFIER
+from pg4nosql.PostgresNoSQLQueryStructure import PostgresNoSQLQueryStructure
 from pg4nosql.PostgresNoSQLResultItem import PostgresNoSQLResultItem
-from psycopg2.extensions import adapt
+from pg4nosql.PostgresNoSQLUtil import to_nullable_string
 
 
-class PostgresNoSQLTable(object):
+class PostgresNoSQLTable(PostgresNoSQLQueryStructure):
     __SQL_INSERT_JSON = "INSERT INTO %s(" + DEFAULT_JSON_COLUMN_NAME + " %s) VALUES(%s %s) RETURNING " + DEFAULT_ROW_IDENTIFIER
-    __SQL_QUERY_JSON = 'SELECT %s FROM %s WHERE %s'
     __SQL_GET_JSON = 'SELECT * FROM %s WHERE ' + DEFAULT_ROW_IDENTIFIER + '=%s'
     __SQL_GET_COLUMNS = 'select column_name from information_schema.columns where table_name = %s'
     __SQL_DELETE_JSON = 'DELETE FROM %s WHERE ' + DEFAULT_ROW_IDENTIFIER + '=%s'
@@ -21,24 +21,8 @@ class PostgresNoSQLTable(object):
     __SQL_QUERY_WITH_JOIN = 'SELECT %s FROM %s AS a JOIN %s AS b ON %s WHERE %s'
 
     def __init__(self, name, connection):
-        self.name = name
-        self.connection = connection
-        self.connection.cursor_factory = RealDictCursor
-        self.cursor = self.connection.cursor()
-
-    @staticmethod
-    def __to_sql_string(obj):
-        if obj is None:
-            return AsIs(obj)
-        return str(obj)
-
-    @staticmethod
-    def __to_nullable_string(obj):
-        if obj is None:
-            return 'Null'
-        if isinstance(obj, dict) or isinstance(obj, list):
-            return adapt(json.dumps(obj))
-        return adapt(str(obj))
+        super(PostgresNoSQLTable, self).__init__(name, connection)
+        self.super = super(PostgresNoSQLTable, self)
 
     def commit(self):
         """
@@ -55,7 +39,7 @@ class PostgresNoSQLTable(object):
 
         if relational_data:
             relational_data_columns = ",".join(relational_data.keys())
-            data_list = map(str, map(self.__to_nullable_string, relational_data.values()))
+            data_list = map(str, map(to_nullable_string, relational_data.values()))
             relational_data_values = ",".join(data_list)
 
         self.cursor.execute(self.__SQL_INSERT, (AsIs(self.name),
@@ -69,7 +53,7 @@ class PostgresNoSQLTable(object):
 
     def update(self, object_id, auto_commit=True, **relational_data):
         relational_data_sql = ','.join(
-            "%s=%s" % (key, str(self.__to_nullable_string(val))) for (key, val) in relational_data.items())
+            "%s=%s" % (key, str(to_nullable_string(val))) for (key, val) in relational_data.items())
 
         self.cursor.execute(self.__SQL_UPDATE, (AsIs(self.name),
                                                 AsIs(relational_data_sql), object_id))
@@ -94,12 +78,6 @@ class PostgresNoSQLTable(object):
             return record
 
         return PostgresNoSQLResultItem(record, self)
-
-    def query(self, query='True', columns='*'):
-        self.cursor.execute(self.__SQL_QUERY_JSON, (AsIs(columns), AsIs(self.name), AsIs(query)))
-        rows = [item for item in self.cursor.fetchall()]
-        items = map(lambda r: PostgresNoSQLResultItem(r, self), rows)
-        return items
 
     def query_join(self, table_name, on_statement, query='True', columns='*'):
         self.cursor.execute(self.__SQL_QUERY_WITH_JOIN, (AsIs(columns),

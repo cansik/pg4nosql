@@ -23,6 +23,8 @@ class PostgresNoSQLResultItem(object):
         return self.__inner_result
 
     def save(self, auto_commit=True):
+        if DEFAULT_ROW_IDENTIFIER not in self.columns:
+            raise NotImplementedError('ResultItem does not contain column "%s"!' % DEFAULT_ROW_IDENTIFIER)
         self.__origin_table.save(self, auto_commit=auto_commit)
 
     class PostgresNoSQLJSONDocument(object):

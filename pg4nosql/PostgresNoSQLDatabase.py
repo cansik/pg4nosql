@@ -3,6 +3,7 @@ from psycopg2.extensions import AsIs
 from psycopg2.extras import RealDictCursor
 from pg4nosql import DEFAULT_JSON_COLUMN_NAME, DEFAULT_ROW_IDENTIFIER, DEFAULT_ROW_IDENTIFIER_TYPE
 from pg4nosql.PostgresNoSQLTable import PostgresNoSQLTable
+from pg4nosql.PostgresNoSQLView import PostgresNoSQLView
 
 
 class PostgresNoSQLDatabase(object):
@@ -25,7 +26,10 @@ class PostgresNoSQLDatabase(object):
 
     def execute(self, sql_query):
         self.cursor.execute(sql_query)
-        return self.cursor.fetchall()
+        if self.cursor.rowcount > 0:
+            return self.cursor.fetchall()
+        else:
+            return None
 
     def create_table(self, table_name, row_identifier_type=DEFAULT_ROW_IDENTIFIER_TYPE, **relational_columns):
         # create additional columns string
@@ -47,6 +51,10 @@ class PostgresNoSQLDatabase(object):
             return PostgresNoSQLTable(table_name, self.connection)
         else:
             return None
+
+    def get_view(self, view_name):
+        # todo: check if view exists
+        return PostgresNoSQLView(view_name, self.connection)
 
     def get_or_create_table(self, table_name, row_identifier_type=DEFAULT_ROW_IDENTIFIER_TYPE, **relational_columns):
         table = self.get_table(table_name)

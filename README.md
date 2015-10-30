@@ -23,10 +23,13 @@ Just run the command:
 *During alpha stage the api will change with each build. So try to stay with one version if you want to use it.*
 
 ##### The hacky way
-1. [download](https://github.com/cansik/pg4nosql/tarball/0.4.0) or clone this repository
+1. [download](https://github.com/cansik/pg4nosql/tarball/0.4.1) or clone this repository
 2. run the command `python setup.py install`
 
 ### Changelog
+* Version `0.4.1`
+  * Query from view
+  * fixed some bugs
 * Version `0.4.0`
   * adds join query statements
   * adds update method
@@ -152,6 +155,27 @@ Here the result of this query:
 ]
 ```
 
+##### Query with Join
+It is also possible to create simple *joined* queries with the function `query_join`. Consider a datamodel with an `user` table and an `address` table. This two tables are connected through a *foreign key* `fk_user`.
+
+The called table get's the identifier `a` and the joined table the identifier `b`.
+
+```python
+# get all users with their address
+users = user.query_join('address', 'a.id = b.fk_user')
+```
+
+##### Query from View
+To query data from a view you have to get the view from the database and then it has the same query method like a table.
+
+```python
+# get view
+self.user_view = self.database.get_view('user_view')
+
+# query data
+records = self.user_view.query()
+```
+
 ##### Query Data Access
 To **access** the **JSON** fields of the result there is an attribute called `json`:
 
@@ -195,6 +219,16 @@ zurich['size'] = 90
 cities.save(zurich)
 ```
 
+With the release `0.4.0` it is also possible to save the database object directly:
+```python
+# make zurich a bit bigger
+zurich = cities.query_one("data->>'name'='Zurich'")
+zurich['size'] = 90
+
+zurich.save()
+```
+
+
 **Without json documents**, there is just a normal `update` method to update new records into a table.
 
 ```python
@@ -221,7 +255,7 @@ demo_db.close()
 ```
 
 ### About
-The wrapper has been written for a science project and is still an early alpha version!
+The wrapper has been written for a science project and is still an early beta version!
 Idea and implementation by Florian (cansik)
 
 MIT License

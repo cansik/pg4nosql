@@ -20,6 +20,8 @@ script:
   - "python test/PostgresNoSQLClientTest.py"
   - "python test/PostgresNoSQLDatabaseTest.py"
   - "python test/PostgresNoSQLTableTest.py"
+  - "python test/PostgresNoSQLResultItemTest.py"
+  - "python test/PostgresNoSQLViewTest.py"
 
 after_success:
   - coveralls
