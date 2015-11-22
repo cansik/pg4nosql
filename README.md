@@ -262,3 +262,5 @@ Idea and implementation by Florian (cansik)
 
 MIT License
 Copyright (c) 2015
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/cansik/pg4nosql/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
